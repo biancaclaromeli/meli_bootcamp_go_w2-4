@@ -64,7 +64,8 @@ func (i *PurchaseOrder) Create() gin.HandlerFunc {
 
 func checkErrorStatusPurchaseOrder(err error) int {
 	if errors.Is(err, purchaseOrder.ErrAlreadyExists) ||
-		errors.Is(err, purchaseOrder.ErrFKNotFound) {
+		errors.Is(err, purchaseOrder.ErrFKNotFound) ||
+		errors.Is(err, purchaseOrder.ErrProductRecordIDNotFound) {
 		return http.StatusConflict
 	}
 	return http.StatusInternalServerError
