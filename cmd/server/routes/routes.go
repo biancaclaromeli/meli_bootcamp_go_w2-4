@@ -53,6 +53,7 @@ func (r *router) MapRoutes() {
 	r.buildCarrierRoutes()
 	r.buildLocalityRoutes()
 	r.buildPurchaseOrderRoutes()
+	r.buildPingRoute()
 }
 
 func (r *router) buildDocumentationRoutes() {
@@ -219,4 +220,10 @@ func (r *router) buildPurchaseOrderRoutes() {
 	{
 		purchaseOrderRG.POST("", middleware.Body[handler.PurchaseOrderRequest](), h.Create())
 	}
+}
+
+func (r *router) buildPingRoute() {
+	r.eng.GET("/ping", func(c *gin.Context) {
+		c.JSON(200, "pong")
+	})
 }
