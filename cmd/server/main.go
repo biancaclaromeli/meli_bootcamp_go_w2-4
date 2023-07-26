@@ -1,19 +1,15 @@
 package main
 
 import (
-	"database/sql"
-
 	"github.com/extmatperez/meli_bootcamp_go_w2-4/cmd/server/routes"
+	"github.com/extmatperez/meli_bootcamp_go_w2-4/config"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
 	// NO MODIFICAR
-	db, err := sql.Open("mysql", "meli_sprint_user:Meli_Sprint#123@/melisprint")
-	if err != nil {
-		panic(err)
-	}
+	db := config.ConnectDb("mysql")
 
 	eng := gin.Default()
 	router := routes.NewRouter(eng, db)
