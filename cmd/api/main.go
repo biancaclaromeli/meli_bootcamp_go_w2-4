@@ -1,31 +1,21 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"net/http"
-
-	"github.com/mercadolibre/fury_go-core/pkg/web"
-	"github.com/mercadolibre/fury_go-platform/pkg/fury"
+	"github.com/gin-gonic/gin"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/mercadolibre/fury_bootcamp-go-w2-s4-4-4/cmd/api/routes"
+	"github.com/mercadolibre/fury_bootcamp-go-w2-s4-4-4/config"
 )
 
 func main() {
-	if err := run(); err != nil {
-		log.Fatal(err)
+	// NO MODIFICAR
+	db := config.ConnectDb("mysql")
+
+	eng := gin.Default()
+	router := routes.NewRouter(eng, db)
+	router.MapRoutes()
+
+	if err := eng.Run(); err != nil {
+		panic(err)
 	}
-}
-
-func run() error {
-	app, err := fury.NewWebApplication()
-	if err != nil {
-		return err
-	}
-
-	app.Post("/hello", helloHandler)
-
-	return app.Run()
-}
-
-func helloHandler(w http.ResponseWriter, r *http.Request) error {
-	return web.EncodeJSON(w, fmt.Sprintf("%s, world!", r.URL.Path[1:]), http.StatusOK)
 }
